@@ -14,15 +14,15 @@ class PostController extends Controller
 {
     public function ambilSemnuaPost(){
         $posts = Post::all();
-        return new PostResource(true,'Data berhasil diambil',$posts);
+        return new PostResource(true,'Data berhasil diambil',$posts,200);
     }
 
     public function ambilPostSpesifik(int $id){
         $post = Post::find($id);
         if($post){
-            return new PostResource(true,'Data berhasil diambil',$post);
+            return new PostResource(true,'Data berhasil diambil',$post,200);
         }else{
-            return new PostResource(false,'Data tidak ditemukan',null);
+            return new PostResource(false,'Data tidak ditemukan',null,404);
         }
     }
 
@@ -34,7 +34,7 @@ class PostController extends Controller
         ]);
 
         if($validator->fails()){
-            return new PostResource(false, null, $validator->errors());
+            return new PostResource(false, null, $validator->errors(),400);
         }
         // upload image
         $image = $request->file('image');
