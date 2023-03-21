@@ -21,7 +21,7 @@ class PostResource extends JsonResource
       * @return void
       */
  
-     public function __construct($status, $message, $statuscode, $resource)
+     public function __construct($status, $message,  $resource, $statuscode)
      {
          // memanggil parent construct
          parent::__construct($resource);
@@ -43,8 +43,8 @@ class PostResource extends JsonResource
          return [
              'status' => $this->status,
              'message' => $this->message,
+             'statuscode' => $this->statuscode,
              'data' => $this->resource,
-             'statuscode' => $this->statuscode
          ];
      }
 }

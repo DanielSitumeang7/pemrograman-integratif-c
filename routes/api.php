@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/posts', [PostController::class, 'ambilSemnuaPost']);
+Route::get('/ambilPost', [PostController::class, 'ambilSemnuaPost']);
 Route::get('/posts/{id}', [PostController::class, 'ambilPostSpesifik']);
 Route::post('/posts', [PostController::class, 'tambahPost']);
 Route::put('/posts/{id}', [PostController::class, 'ubahPost']);

@@ -49,7 +49,7 @@ class PostController extends Controller
         ]);
 
         //return response
-        return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
+        return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post, 200);
     }
 
     public function ubahPost(Request $request,$id){
@@ -59,7 +59,7 @@ class PostController extends Controller
         ]);
 
         if($validator->fails()){
-            return new PostResource(false, null, $validator->errors());
+            return new PostResource(false, null, $validator->errors(),400);
         }
 
         // upload image
@@ -94,16 +94,16 @@ class PostController extends Controller
         $post = Post::find($id);
 
         //return response
-        return new PostResource(true, 'Data Post Berhasil Diubah!', $post);
+        return new PostResource(true, 'Data Post Berhasil Diubah!', $post,200);
     }
 
     public function hapusPost($id){
         $post = Post::find($id);
         if($post){
             $post->delete();
-            return new PostResource(true,'Data berhasil dihapus',$post);
+            return new PostResource(true,'Data berhasil dihapus',$post,200);
         }else{
-            return new PostResource(false,'Data tidak ditemukan',null);
+            return new PostResource(false,'Data tidak ditemukan',null,404);
         }
     }
 }
