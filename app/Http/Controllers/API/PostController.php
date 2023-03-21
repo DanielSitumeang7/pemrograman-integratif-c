@@ -69,13 +69,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //return single post as a resource
-        if(!$post){
-            return abort(404);
+        if($post) {
+            return new PostResource(true, 'Detail Data Post', $post);
+        } else {
             return new PostResource(false, 'Data Post Tidak Ditemukan!', null);
-        }
-        else{
-            return new PostResource(true, 'Data Post Ditemukan!', $post);
         }
     }
 
