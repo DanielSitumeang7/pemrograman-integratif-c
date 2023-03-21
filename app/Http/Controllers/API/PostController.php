@@ -57,8 +57,13 @@ class PostController extends Controller
             'content'   => $request->content,
         ]);
 
-        //return response
-        return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
+        if($post){
+            //return response
+            return new PostResource(true, 'Data Post Berhasil Ditambahkan!', $post);
+        }
+        else{
+            return new PostResource(false, 'Data Post Gagal Ditambahkan!', null);
+        }
     } 
 
     /**
