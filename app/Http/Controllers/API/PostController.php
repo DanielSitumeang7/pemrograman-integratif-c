@@ -62,6 +62,8 @@ class PostController extends Controller
             return new PostResource(false, null, $validator->errors(),400);
         }
 
+        $late_post = Post::find($id);
+
         // upload image
         //check if image is not empty
         if ($request->hasFile('image')) {
@@ -71,7 +73,7 @@ class PostController extends Controller
             $image->storeAs('public/posts', $image->hashName());
 
             //delete old image
-            Storage::delete('public/posts/'.$post->image);
+            Storage::delete('public/posts/'.$late_post->image);
 
             //set new image path
             $storagepath = 'http://localhost:8000/storage/posts/';

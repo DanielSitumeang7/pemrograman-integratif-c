@@ -25,7 +25,6 @@ class Autentikasi extends Controller
         }
 
         $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
         $user = User::create(
             [
                 'name' => $input['name'],
@@ -34,7 +33,7 @@ class Autentikasi extends Controller
                 'api_token' => Str::random(60)
             ]
         );
-        $success['token'] =  $user->createToken('MyApp')->accessToken;
+        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
         $success['name'] =  $user->name;
 
         return response()->json(['success'=>$success], 200);
