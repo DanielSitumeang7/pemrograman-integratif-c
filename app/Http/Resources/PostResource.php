@@ -10,6 +10,7 @@ class PostResource extends JsonResource
      // mendefinisikan properti status dan message
      public $status;
      public $message;
+     public $statuscode;
  
      /**
       * __construct
@@ -20,13 +21,14 @@ class PostResource extends JsonResource
       * @return void
       */
  
-     public function __construct($status, $message, $resource)
+     public function __construct($status, $message,  $resource, $statuscode)
      {
          // memanggil parent construct
          parent::__construct($resource);
          // mengisi properti status dan message
          $this->status = $status;
          $this->message = $message;
+         $this->statuscode = $statuscode;
      }
  
      /**
@@ -41,7 +43,8 @@ class PostResource extends JsonResource
          return [
              'status' => $this->status,
              'message' => $this->message,
-             'data' => $this->resource
+             'statuscode' => $this->statuscode,
+             'data' => $this->resource,
          ];
      }
 }
