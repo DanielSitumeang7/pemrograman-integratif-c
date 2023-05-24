@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\RequestGuard;
+use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Autentikasi extends Controller
 {
@@ -39,6 +41,33 @@ class Autentikasi extends Controller
         return response()->json(['success'=>$success], 200);
     }
 
+    public function registerjwt(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Validation failed', 'data' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Create a new user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // Generate JWT token
+        $token = JWTAuth::fromUser($user);
+
+        // Return the token as a response
+        return response()->json(['token' => $token], Response::HTTP_OK);
+    }
+
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -61,6 +90,31 @@ class Autentikasi extends Controller
             return response()->json(['error'=>'Unauthorised'], 401);
         }
 
+    }
+
+    public function loginjwt(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Validation failed', 'data' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Check if the provided credentials are valid
+        $credentials = $request->only('email', 'password');
+        if (!$token = Auth::attempt($credentials)) {
+            return response()->json(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Generate JWT token
+        $token = JWTAuth::fromUser(Auth::user());
+
+        // Return the token as a response
+        return response()->json(['token' => $token], Response::HTTP_OK);
     }
 
     public function logout(Request $request){
